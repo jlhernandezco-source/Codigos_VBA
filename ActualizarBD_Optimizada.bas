@@ -381,8 +381,31 @@ Private Sub RegistrarLog(ByVal texto As String)
 End Sub
 
 Private Function CamposActualizarBD() As Variant
-    CamposActualizarBD = Split( _
-        "Id|Version|Fecha Integracion|Identificador GMM|POT|VERSION2|Techo_Adicional|TOTAL|Concepto|Ejecutor|Centro_Gestor|Fondo|Programa_Presupuestario|E_PEP_6nivel|Desc_ProgPresup|Posicion Presupuestaria|Actividaad GAE|Moneda|ContratoOrigen|Contrato|MODO CONTRAT|Estado Contrato|Politica_de_Pago|Fecha de inicio Contrato|Fecha de termino Contrato|Desc_Contrato|Compania|CIA_ABREV|Reserva_Pptal (Contrato)|Folio_SIT|Folio_RAF_AF|FAO (F_Azul)|ID_AsignadoFA|Reserva_Pos_Asignada|SolPed|Pedido|Fecha Asig FA|FA (F_Azul)|Fecha Inicio Pedido|Fecha Termino Pedido|ARES anuencia|PREINICIATIVA/ SPYA|Descripción_de_la_actividad|Estatus de la actividad formato K|Tipo de mantenimiento|Tipo de equipo|EQUIPO|ENTIDAD|INSTALACION|COMPLEJO|Supervisor Técnico|Nombre_Corto|Supervisor Administrativo|DENE|DFEB|DMAR|DABR|DMAY|DJUN|DJUL|DAGO|DSEP|DOCT|DNOV|DDIC|DTotal|Costo de la actividad|OBSERVACIONES|OBSERVACIONS ADICIONALES|Comentarios|Grupo_Concepto|Concepto_Corto|Orden_Grafica|TIPO_MANTTO|Tipo_Actividad|INSTALACN|Superintendencia|Concepto_Cto|Año|Area Administradora del Contrato|Fecha_Recepcion|Orden_Grupo|Familia|TIPO_MANTTO2|Plazo_Entrega|Capas|Grupo|SubGrupo|Tipo_Equipo|Fecha_Facturacion|EventoFAO|EventoFaAsig|SemanaCOPADE|SemanaFactura|EventoFaSol|Concepto_Resumen|Form_Adecuado|Responsable|Fecha_Actualizacion|ActividadCorta|Obs_FAO|Obs_FA|Obs_Vencidos|Avance|Estatus_Actividad", "|")
+    Dim campos As String
+
+    campos = "Id|Version|Fecha Integracion|Identificador GMM|POT|VERSION2|Techo_Adicional|"
+    campos = campos & "TOTAL|Concepto|Ejecutor|Centro_Gestor|Fondo|Programa_Presupuestario|"
+    campos = campos & "E_PEP_6nivel|Desc_ProgPresup|Posicion Presupuestaria|Actividaad GAE|"
+    campos = campos & "Moneda|ContratoOrigen|Contrato|MODO CONTRAT|Estado Contrato|"
+    campos = campos & "Politica_de_Pago|Fecha de inicio Contrato|Fecha de termino Contrato|"
+    campos = campos & "Desc_Contrato|Compania|CIA_ABREV|Reserva_Pptal (Contrato)|Folio_SIT|"
+    campos = campos & "Folio_RAF_AF|FAO (F_Azul)|ID_AsignadoFA|Reserva_Pos_Asignada|SolPed|"
+    campos = campos & "Pedido|Fecha Asig FA|FA (F_Azul)|Fecha Inicio Pedido|Fecha Termino Pedido|"
+    campos = campos & "ARES anuencia|PREINICIATIVA/ SPYA|Descripción_de_la_actividad|"
+    campos = campos & "Estatus de la actividad formato K|Tipo de mantenimiento|Tipo de equipo|"
+    campos = campos & "EQUIPO|ENTIDAD|INSTALACION|COMPLEJO|Supervisor Técnico|Nombre_Corto|"
+    campos = campos & "Supervisor Administrativo|DENE|DFEB|DMAR|DABR|DMAY|DJUN|DJUL|DAGO|"
+    campos = campos & "DSEP|DOCT|DNOV|DDIC|DTotal|Costo de la actividad|OBSERVACIONES|"
+    campos = campos & "OBSERVACIONS ADICIONALES|Comentarios|Grupo_Concepto|Concepto_Corto|"
+    campos = campos & "Orden_Grafica|TIPO_MANTTO|Tipo_Actividad|INSTALACN|Superintendencia|"
+    campos = campos & "Concepto_Cto|Año|Area Administradora del Contrato|Fecha_Recepcion|"
+    campos = campos & "Orden_Grupo|Familia|TIPO_MANTTO2|Plazo_Entrega|Capas|Grupo|SubGrupo|"
+    campos = campos & "Tipo_Equipo|Fecha_Facturacion|EventoFAO|EventoFaAsig|SemanaCOPADE|"
+    campos = campos & "SemanaFactura|EventoFaSol|Concepto_Resumen|Form_Adecuado|Responsable|"
+    campos = campos & "Fecha_Actualizacion|ActividadCorta|Obs_FAO|Obs_FA|Obs_Vencidos|Avance|"
+    campos = campos & "Estatus_Actividad"
+
+    CamposActualizarBD = Split(campos, "|")
 End Function
 
 Private Function ColumnaTabla(ByVal tabla As ListObject, ByVal nombre As String) As Long
