@@ -1,0 +1,58 @@
+ANALISIS DEL PROCEDIMIENTO DE SINCRONIZACION EXCEL-ACCESS
+
+Archivos
+- ActualizarBD_DesdeTabla.bas: modulo VBA para importar al proyecto de Excel.
+- Este archivo: decisiones, requisitos y validaciones recomendadas.
+
+Aclaracion solicitada
+- Se retiro la asignacion del resultado de @@Identity a la celda Excel.Id.
+  Excel.Id puede contener otro dato y debe conservarse sin cambios.
+- Despues de insertar, el identificador generado se escribe solo en la columna
+  Excel.ID_ActualizarBD, una vez que Access confirma el lote.
+
+Comportamiento
+1. Ejecuta ActualizarBD_DesdeTabla con una celda de la tabla de Excel seleccionada.
+2. Procesa solamente las filas con AccionEnBD igual a Actualizar, Insertar o Eliminar
+   (sin distinguir mayusculas/minusculas).
+3. Usa ID_ActualizarBD de Excel como identificador para buscar en Bd_Ppto.Id1 al
+   actualizar o eliminar.
+4. Para insertar, envia el valor de Excel.Id al campo Bd_Ppto.Id. Access genera
+   aparte la clave autonumerica Bd_Ppto.Id1. Lee @@Identity en la misma conexion
+   y coloca ese valor unicamente en la columna ID_ActualizarBD de Excel despues
+   de confirmar el lote. La columna Id de Excel no se modifica.
+5. Escribe Fecha_Actualizacion en Access y Excel unicamente despues de que la
+   operacion correspondiente haya sido confirmada en Access.
+6. Confirma los cambios en lotes de 20 filas. Si ocurre un error, revierte el lote
+   abierto y conserva los lotes que ya fueron confirmados.
+7. Muestra el numero y la fila actual en la barra de estado de Excel; al terminar
+   o fallar restaura Calculation, ScreenUpdating, EnableEvents y StatusBar.
+8. Cierra la conexion de Access en la salida normal y en la ruta de error. Los
+   errores se muestran en español con contexto de fila/accion y se registran en
+   ActualizarBD_Log.txt junto al libro.
+
+Dependencias y supuestos
+- La tabla destino se llama Bd_Ppto y sus campos sincronizables son los que lista
+  CamposActualizarBD en el modulo original ActualizarBD_Optimizada.bas.
+- Los encabezados de la tabla de Excel deben coincidir con esos nombres y contener
+  tambien AccionEnBD, Id, ID_ActualizarBD y Fecha_Actualizacion.
+- Se sigue el esquema reflejado en el modulo original: Bd_Ppto.Id1 es la clave
+  autonumerica y Bd_Ppto.Id es un campo de datos sincronizado desde Excel. Por eso
+  ID_ActualizarBD se compara con Id1; el valor generado nunca se escribe en Excel.Id.
+- Se reutiliza AbreConexion cn, llamada en ActualizarBD_Optimizada.bas. Su
+  implementacion no esta en este repositorio y debe existir en el proyecto VBA
+  que importe el modulo, con la conexion/configuracion apropiada.
+- El modulo requiere la referencia ADO que ya use el libro/proyecto (por ejemplo,
+  Microsoft ActiveX Data Objects) porque declara tipos ADODB.
+- La insercion supone que los otros campos no incluidos tienen valores por defecto
+  o aceptan Null; una restriccion de Access incumplida se informa y revierte el lote.
+
+Instalacion y prueba
+1. Importa Codigo/ActualizarBD_DesdeTabla.bas en el proyecto VBA del libro.
+2. Confirma en el Editor VBA que AbreConexion esta disponible y ejecuta
+   Depuracion > Compilar VBAProject.
+3. En una copia desechable del libro y de la base Access, prepara filas de prueba
+   para Actualizar, Insertar y Eliminar, y una fila con ID_ActualizarBD vacio.
+4. Selecciona una celda de la tabla y ejecuta ActualizarBD_DesdeTabla. Comprueba
+   que la insercion escriba el valor generado solo en ID_ActualizarBD y preserve
+   Excel.Id, la fecha solo en operaciones exitosas, el avance en la barra de
+   estado y el cierre de la conexion.
